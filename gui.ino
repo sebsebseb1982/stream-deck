@@ -9,11 +9,25 @@ void drawButton(unsigned int x, unsigned int y) {
     LED_MARGIN,
     WHITE
   );
+}
 
-  display.fillCircle(
-    x + BUTTON_SIZE - 1 - LED_MARGIN,
-    y + LED_MARGIN,
-    3,
-    WHITE
-  );
+void drawToggleButton(unsigned int x, unsigned int y, boolean status) {
+  drawButton(x, y);
+
+  if (status) {
+    display.fillCircle(
+      x + BUTTON_SIZE - 1 - LED_MARGIN,
+      y + LED_MARGIN,
+      3,
+      WHITE
+    );
+  } else {
+    display.drawCircle(
+      x + BUTTON_SIZE - 1 - LED_MARGIN,
+      y + LED_MARGIN,
+      3,
+      WHITE
+    );
+  }
+
 }

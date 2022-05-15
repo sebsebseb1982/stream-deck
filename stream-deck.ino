@@ -1,6 +1,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <WiFi.h>
+#include <HTTPClient.h>
 #include <NTPClient.h>
 #include <TimeLib.h>
 
@@ -15,6 +16,7 @@
 #define BUTTON_SIZE 64
 #define TIME_BUTTON_X 0
 #define TIME_BUTTON_Y 0
+#define HTTP_RETRY 10
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 

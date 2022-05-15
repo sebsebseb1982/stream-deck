@@ -17,9 +17,10 @@ void drawDateTimeButton(unsigned int x, unsigned int y) {
 }
 
 void drawImageButton(unsigned int x, unsigned int y, String text) {
-  drawButton(
+  drawToggleButton(
     x,
-    y
+    y,
+    getJeedomVirtualValue(533) == "1"
   );
   display.drawBitmap(
     x + 16,
