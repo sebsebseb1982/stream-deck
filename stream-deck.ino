@@ -2,12 +2,10 @@
 #include <Adafruit_SSD1306.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-#include <NTPClient.h>
-#include <TimeLib.h>
 
 #include "secret.h"
-#include "time.h"
 #include "images.h"
+#include "buttons.h"
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
@@ -20,30 +18,36 @@
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-WiFiUDP ntpUDP;
-
-NTPClient timeClient(ntpUDP, "fr.pool.ntp.org", 3600, 60000);
-
 void setup() {
   Serial.begin(115200);
   setupDisplay();
   setupWifi();
-  setupTime();
+  setupButtons();
 }
 
 void loop() {
+  loopButtons();
   display.clearDisplay();
-  Serial.print(timeClient.getFormattedTime());
-  Serial.print(" ");
-  Serial.println(getFormattedDateDDMM(getDateTime()));
-  drawDateTimeButton(
+  /*drawDateTimeButton(
     TIME_BUTTON_X,
     TIME_BUTTON_Y
+    );*/
+  drawTemperatureButton(
+    TIME_BUTTON_X,
+    TIME_BUTTON_Y,
+    "Exterieur",
+    320
   );
-  drawImageButton(
+  drawTemperatureButton(
+    TIME_BUTTON_X + BUTTON_SIZE,
+    TIME_BUTTON_Y,
+    "Interieur",
+    305
+  );
+  /*drawImageButton(
     TIME_BUTTON_X + BUTTON_SIZE,
     TIME_BUTTON_Y,
     "Bureau"
-  );
+    );*/
   display.display();
 }
