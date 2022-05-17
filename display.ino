@@ -1,10 +1,20 @@
-void setupDisplay() {
-  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
-    Serial.println(F("SSD1306 allocation failed"));
-    for (;;);
-  }
-  display.clearDisplay();
+int pwmChannel = 0; //Choisit le canal 0
+int frequence = 1000; //Fréquence PWM de 1 KHz
+int resolution = 8; // Résolution de 8 bits, 256 valeurs possibles
+int pwmPin = 26;
 
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
+void setupDisplay() {
+  screen.init();
+  screen.fillScreen(BACKGROUND_COLOR);
+
+  ledcSetup(pwmChannel, frequence, resolution);
+  ledcAttachPin(pwmPin, pwmChannel);
+  ledcWrite(pwmChannel, 255);
+}
+
+void loopDisplay() {
+  ledcWrite(
+    pwmChannel,
+    getJeedomVirtualValue(687).toInt()
+  );
 }

@@ -1,7 +1,8 @@
 void drawDateTimeButton(unsigned int x, unsigned int y) {
   drawButton(
     x,
-    y
+    y,
+    UNAVAILABLE
   );
   int lineHeight = 6;
   drawCenteredText(
@@ -20,7 +21,7 @@ void drawImageButton(unsigned int x, unsigned int y, String text) {
   drawToggleButton(
     x,
     y,
-    getJeedomVirtualValue(683) == "1"
+    getJeedomVirtualValue(683) == "1" ? ACTIVATED : DESACTIVATED
   );
   display.drawBitmap(
     x + 16,
@@ -40,7 +41,8 @@ void drawImageButton(unsigned int x, unsigned int y, String text) {
 void drawTemperatureButton(unsigned int x, unsigned int y, String text, int virtualId) {
   drawButton(
     x,
-    y
+    y,
+    UNAVAILABLE
   );
   display.setTextSize(2);
   drawCenteredText(
@@ -53,5 +55,38 @@ void drawTemperatureButton(unsigned int x, unsigned int y, String text, int virt
     x + (BUTTON_SIZE / 2),
     y + 51,
     text
+  );
+}
+
+void drawWindowsButton(unsigned int x, unsigned int y) {
+  drawButton(
+    x,
+    y,
+    UNAVAILABLE
+  );
+  if (getJeedomVirtualValue(565) == "1") {
+    display.drawBitmap(
+      x + 16,
+      y + 10,
+      windowOpened,
+      32,
+      32,
+      LIGHT_BLUE
+    );
+  } else {
+    display.drawBitmap(
+      x + 16,
+      y + 10,
+      windowClosed,
+      32,
+      32,
+      RED
+    );
+  }
+
+  drawCenteredText(
+    x + (BUTTON_SIZE / 2),
+    y + 51,
+    "Aeration"
   );
 }

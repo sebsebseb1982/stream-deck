@@ -14,5 +14,5 @@ void drawCenteredText(unsigned int x, unsigned int y, String text) {
     x - w / 2,
     y - h / 2
   );
-  display.print(text);
+  display.println(text);
 }

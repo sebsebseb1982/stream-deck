@@ -1,32 +1,78 @@
 #define LED_MARGIN 10
 
-void drawButton(unsigned int x, unsigned int y) {
+void drawButton(
+  unsigned int x,
+  unsigned int y,
+  ButtonStatus buttonStatus
+) {
+
+  if (buttonStatus == ACTIVATED) {
+    display.fillRoundRect(
+      x,
+      y,
+      BUTTON_SIZE,
+      BUTTON_SIZE,
+      LED_MARGIN,
+      BLACK
+    );
+    unsigned int delta = 3;
+    display.fillRoundRect(
+      x + delta,
+      y + delta,
+      BUTTON_SIZE - delta,
+      BUTTON_SIZE - delta,
+      LED_MARGIN,
+      DARK_GRAY
+    );
+  } else {
+    display.fillRoundRect(
+      x,
+      y,
+      BUTTON_SIZE,
+      BUTTON_SIZE,
+      LED_MARGIN,
+      BACKGROUND_COLOR
+    );
+  }
+
+
+  uint16_t buttonBorderColor;
+  if (buttonStatus == UNAVAILABLE) {
+    buttonBorderColor = DARK_GRAY;
+  } else {
+    buttonBorderColor = WHITE;
+  }
+
   display.drawRoundRect(
     x,
     y,
     BUTTON_SIZE,
     BUTTON_SIZE,
     LED_MARGIN,
-    WHITE
+    buttonBorderColor
   );
 }
 
-void drawToggleButton(unsigned int x, unsigned int y, boolean status) {
-  drawButton(x, y);
+void drawToggleButton(
+  unsigned int x,
+  unsigned int y,
+  ButtonStatus buttonStatus
+) {
+  drawButton(x, y, buttonStatus);
 
-  if (status) {
+  if (buttonStatus == ACTIVATED) {
     display.fillCircle(
       x + BUTTON_SIZE - 1 - LED_MARGIN,
       y + LED_MARGIN,
       3,
-      WHITE
+      LED_GREEN_COLOR
     );
   } else {
-    display.drawCircle(
+    display.fillCircle(
       x + BUTTON_SIZE - 1 - LED_MARGIN,
       y + LED_MARGIN,
       3,
-      WHITE
+      LIGHT_GRAY
     );
   }
 
