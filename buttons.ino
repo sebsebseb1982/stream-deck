@@ -2,6 +2,7 @@ void drawDateTimeButton(unsigned int x, unsigned int y) {
   drawButton(
     x,
     y,
+    "",
     UNAVAILABLE
   );
   int lineHeight = 6;
@@ -17,13 +18,14 @@ void drawDateTimeButton(unsigned int x, unsigned int y) {
   );
 }
 
-void drawImageButton(unsigned int x, unsigned int y, String text) {
+void drawImageButton(unsigned int x, unsigned int y, String label) {
   drawToggleButton(
     x,
     y,
+    label,
     getJeedomVirtualValue(683) == "1" ? ACTIVATED : DESACTIVATED
   );
-  display.drawBitmap(
+  screen.drawBitmap(
     x + 16,
     y + 10,
     bulb,
@@ -31,62 +33,68 @@ void drawImageButton(unsigned int x, unsigned int y, String text) {
     32,
     WHITE
   );
-  drawCenteredText(
-    x + (BUTTON_SIZE / 2),
-    y + 51,
-    text
-  );
 }
 
-void drawTemperatureButton(unsigned int x, unsigned int y, String text, int virtualId) {
+void drawTemperatureButton(unsigned int x, unsigned int y, String label, int virtualId) {
+  String temperature = getJeedomVirtualValue(virtualId);
   drawButton(
     x,
     y,
+    label,
     UNAVAILABLE
   );
-  display.setTextSize(2);
+  screen.setTextSize(2);
   drawCenteredText(
     x + (BUTTON_SIZE / 2),
     y + 25,
-    getJeedomVirtualValue(virtualId)
+    temperature
   );
-  display.setTextSize(1);
-  drawCenteredText(
-    x + (BUTTON_SIZE / 2),
-    y + 51,
-    text
-  );
+  screen.setTextSize(1);
 }
 
 void drawWindowsButton(unsigned int x, unsigned int y) {
+  boolean isWindowOpened = getJeedomVirtualValue(565) == "1";
   drawButton(
     x,
     y,
+    "Aeration",
     UNAVAILABLE
   );
-  if (getJeedomVirtualValue(565) == "1") {
-    display.drawBitmap(
-      x + 16,
+  if (isWindowOpened) {
+    screen.drawBitmap(
+      x + (BUTTON_SIZE - ICON_SIZE) / 2,
       y + 10,
       windowOpened,
-      32,
-      32,
+      ICON_SIZE,
+      ICON_SIZE,
       LIGHT_BLUE
     );
   } else {
-    display.drawBitmap(
-      x + 16,
+    screen.drawBitmap(
+      x + (BUTTON_SIZE - 32) / 2,
       y + 10,
       windowClosed,
-      32,
-      32,
+      ICON_SIZE,
+      ICON_SIZE,
       RED
     );
   }
+}
 
-  drawCenteredText(
-    x + (BUTTON_SIZE / 2),
-    y + 51,
-    "Aeration"
+void drawMeteoWidget(unsigned int x, unsigned int y, WeatherForecast weatherForecast, String label) {
+  drawButton(
+    x,
+    y,
+    label,
+    UNAVAILABLE
   );
+
+  /*screen.drawBitmap(
+    x + 7,
+    y + 2,
+    clearSky,
+    ICON_SIZE,
+    ICON_SIZE,
+    WHITE
+  );*/
 }

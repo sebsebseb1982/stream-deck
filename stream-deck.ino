@@ -2,36 +2,49 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <LCDWIKI_GUI.h>
+#include <moonPhase.h>
+#include <ArduinoJson.h>
+#include <SPI.h>
 
-#include "SSD1283A.h"
+#include <TFT_eSPI.h> // Hardware-specific library
+
+
 #include "display.h"
+#include "gui.h"
 #include "secret.h"
+#include "weather-forecast.h"
 #include "images.h"
 #include "buttons.h"
 
-#define SCREEN_WIDTH 130 // OLED display width, in pixels
-#define SCREEN_HEIGHT 130 // OLED display height, in pixels
+#include <Fonts/FreeSans9pt7b.h>
+#include <Fonts/FreeSans12pt7b.h>
 
-#define BUTTON_SIZE 64
+#define SCREEN_WIDTH 480 // OLED display width, in pixels
+#define SCREEN_HEIGHT 320 // OLED display height, in pixels
+
 #define TIME_BUTTON_X 0
 #define TIME_BUTTON_Y 0
 #define HTTP_RETRY 10
 
-SSD1283A_GUI screen(/*CS=5*/ SS, /*DC=*/ 17, /*RST=*/ 16, /*LED=*/ 4); //hardware spi,cs,cd,reset,led
+TFT_eSPI screen = TFT_eSPI();
+//SSD1283A_GUI screen(/*CS=5*/ SS, /*DC=*/ 17, /*RST=*/ 16, /*LED=*/ 4); //hardware spi,cs,cd,reset,led
 
-GFXcanvas16T<SCREEN_WIDTH, SCREEN_HEIGHT> display;
+//GFXcanvas16T<SCREEN_WIDTH, SCREEN_HEIGHT> display;
+
+TwoDaysWeatherForecasts twoDaysWeatherForecasts;
 
 void setup() {
   Serial.begin(115200);
-  setupDisplay();
+  setupScreen();
   setupWifi();
   setupButtons();
+
+  twoDaysWeatherForecasts = getWeatherForecasts();
 }
 
 void loop() {
   loopButtons();
-  loopDisplay();
-  display.fillScreen(BACKGROUND_COLOR);
+  //loopScreen();
   drawWindowsButton(
     TIME_BUTTON_X,
     TIME_BUTTON_Y
@@ -48,16 +61,25 @@ void loop() {
     "Interieur",
     305
   );
+
   drawImageButton(
     TIME_BUTTON_X + BUTTON_SIZE + 1,
     TIME_BUTTON_Y + BUTTON_SIZE + 1,
     "Bureau"
   );
-  screen.drawRGBBitmap(
-    0,
-    0,
-    display.getBuffer(),
-    display.width(),
-    display.height()
+/*
+  drawMeteoWidget(
+    TIME_BUTTON_X + BUTTON_SIZE + 1,
+    TIME_BUTTON_Y + BUTTON_SIZE + 1,
+    twoDaysWeatherForecasts.today,
+    "Auj."
   );
+  */
+  /*tft.drawRGBBitmap(
+    0,
+    0,
+    screen.getBuffer(),
+    screen.width(),
+    screen.height()
+  );*/
 }

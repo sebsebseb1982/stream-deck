@@ -3,11 +3,11 @@
 void drawButton(
   unsigned int x,
   unsigned int y,
+  String label,
   ButtonStatus buttonStatus
 ) {
-
   if (buttonStatus == ACTIVATED) {
-    display.fillRoundRect(
+    screen.fillRoundRect(
       x,
       y,
       BUTTON_SIZE,
@@ -16,7 +16,7 @@ void drawButton(
       BLACK
     );
     unsigned int delta = 3;
-    display.fillRoundRect(
+    screen.fillRoundRect(
       x + delta,
       y + delta,
       BUTTON_SIZE - delta,
@@ -25,7 +25,7 @@ void drawButton(
       DARK_GRAY
     );
   } else {
-    display.fillRoundRect(
+    screen.fillRoundRect(
       x,
       y,
       BUTTON_SIZE,
@@ -35,7 +35,6 @@ void drawButton(
     );
   }
 
-
   uint16_t buttonBorderColor;
   if (buttonStatus == UNAVAILABLE) {
     buttonBorderColor = DARK_GRAY;
@@ -43,7 +42,7 @@ void drawButton(
     buttonBorderColor = WHITE;
   }
 
-  display.drawRoundRect(
+  screen.drawRoundRect(
     x,
     y,
     BUTTON_SIZE,
@@ -51,24 +50,36 @@ void drawButton(
     LED_MARGIN,
     buttonBorderColor
   );
+
+  drawCenteredText(
+    x + (BUTTON_SIZE / 2),
+    y + 51,
+    label
+  );
 }
 
 void drawToggleButton(
   unsigned int x,
   unsigned int y,
+  String label,
   ButtonStatus buttonStatus
 ) {
-  drawButton(x, y, buttonStatus);
+  drawButton(
+    x,
+    y,
+    label,
+    buttonStatus
+  );
 
   if (buttonStatus == ACTIVATED) {
-    display.fillCircle(
+    screen.fillCircle(
       x + BUTTON_SIZE - 1 - LED_MARGIN,
       y + LED_MARGIN,
       3,
       LED_GREEN_COLOR
     );
   } else {
-    display.fillCircle(
+    screen.fillCircle(
       x + BUTTON_SIZE - 1 - LED_MARGIN,
       y + LED_MARGIN,
       3,
