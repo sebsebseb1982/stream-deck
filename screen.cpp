@@ -1,5 +1,6 @@
 #include "screen.h"
 #include "colors.h"
+#include "touch-screen.h"
 
 
 #define pwmChannel 0 //Choisit le canal 0
@@ -23,6 +24,12 @@ void Screen::init() {
 }
 
 void Screen::loop() {
+  if (TouchScreen::isTouched) {
+    digitalWrite(25, HIGH);
+  } else {
+    digitalWrite(25, LOW);
+  }
+
   ledcWrite(
     pwmChannel,
     255 /*getJeedomVirtualValue(687).toInt()*/

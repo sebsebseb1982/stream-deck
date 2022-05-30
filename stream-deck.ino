@@ -12,8 +12,9 @@
 #include "widget-toggle-button.h"
 #include "widget-button.h"
 #include "jeedom.h"
+#include "touch-screen.h"
+#include "duration.h"
 
-#include "gui.h"
 #include "weather-forecast.h"
 #include "images.h"
 
@@ -25,14 +26,14 @@ Screen screenSetup(&screen);
 
 TwoDaysWeatherForecasts twoDaysWeatherForecasts;
 
-unsigned long temperatureWidgetsRefreshPeriodInMs = 1 /* minutes */ * 60 * 1000;
+unsigned long count = 0;
 
 WidgetTemperature etage(
   5,
   0,
   "Etage",
   &screen,
-  temperatureWidgetsRefreshPeriodInMs,
+  ONE_MINUTE,
   315
 );
 
@@ -41,7 +42,7 @@ WidgetTemperature rdc(
   1,
   "RDC",
   &screen,
-  temperatureWidgetsRefreshPeriodInMs,
+  ONE_MINUTE,
   314
 );
 
@@ -50,7 +51,7 @@ WidgetTemperature exterieur(
   2,
   "Exterieur",
   &screen,
-  temperatureWidgetsRefreshPeriodInMs,
+  ONE_MINUTE,
   320
 );
 
@@ -59,7 +60,7 @@ WidgetTemperature setPoint(
   1,
   "Chauffage",
   &screen,
-  temperatureWidgetsRefreshPeriodInMs,
+  ONE_MINUTE,
   291
 );
 
@@ -68,7 +69,7 @@ WidgetButton setPointPlus(
   2,
   "Consigne +",
   &screen,
-  1,
+  ONE_MINUTE,
   increment,
   291
 );
@@ -78,7 +79,7 @@ WidgetButton setPointMinus(
   3,
   "Consigne -",
   &screen,
-  1,
+  ONE_MINUTE,
   decrement,
   291
 );
@@ -88,7 +89,7 @@ WidgetToggleButton office(
   1,
   "Bureau",
   &screen,
-  1,
+  FIVE_SECONDS,
   683
 );
 
@@ -97,7 +98,7 @@ WidgetButton gate(
   1,
   "Portail",
   &screen,
-  1,
+  ONE_MINUTE,
   setToOne,
   338
 );
@@ -107,7 +108,7 @@ WidgetDatetime datetime(
   0,
   "",
   &screen,
-  5 * 1000
+  FIVE_SECONDS
 );
 
 void setup() {
@@ -124,9 +125,12 @@ void setup() {
   office.init();
   gate.init();
   datetime.init();
+  pinMode(25, OUTPUT);
 }
 
 void loop() {
+  count++;
+  TouchScreen::refresh(&screen);
   screenSetup.loop();
   datetime.refresh();
   drawWindowsWidget(4, 0);
@@ -138,6 +142,12 @@ void loop() {
 
   refreshHeaterWidgets();
   refreshTemperatureWidgets();
+  screen.drawString(
+    String(count),
+    60,
+    290,
+    1
+  );
 }
 
 void drawWeatherForecastsWidgets() {

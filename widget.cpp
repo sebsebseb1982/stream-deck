@@ -1,5 +1,6 @@
 #include "widget.h"
 #include "screen.h"
+#include "touch-screen.h"
 
 Widget::Widget(
   unsigned int column,
@@ -18,8 +19,8 @@ Widget::Widget(
 }
 
 void Widget::init() {
-    refreshValue();
-    draw();
+  refreshValue();
+  draw();
 }
 
 void Widget::refresh() {
@@ -34,26 +35,23 @@ void Widget::refresh() {
   }
 
   touchStatus = isTouched();
-  if(previousTouchStatus != touchStatus && touchStatus) {
+  if (previousTouchStatus != touchStatus && touchStatus) {
     manageTouchDown();
   }
-  if(touchStatus) {
+  /*if (touchStatus) {
     manageTouch();
-  }
-  if(previousTouchStatus != touchStatus && !touchStatus) {
+  }*/
+  if (previousTouchStatus != touchStatus && !touchStatus) {
     manageTouchUp();
   }
   previousTouchStatus = touchStatus;
+  Serial.println("Widget::refresh() " + label + "(time=" + String(millis() - currentMillis) + "ms )");
 }
 
 boolean Widget::isTouched() {
-  uint16_t xTouch, yTouch;
-  boolean isTouched = screen->getTouch(&xTouch, &yTouch);
-  xTouch = SCREEN_WIDTH - xTouch;
-  yTouch = SCREEN_HEIGHT - yTouch;
-  return isTouched
-         && xTouch >= x
-         && xTouch < x + BUTTON_SIZE
-         && yTouch >= y
-         && yTouch < y + BUTTON_SIZE;
+  return TouchScreen::isTouched
+         && TouchScreen::x >= x
+         && TouchScreen::x < x + BUTTON_SIZE
+         && TouchScreen::y >= y
+         && TouchScreen::y < y + BUTTON_SIZE;
 }
