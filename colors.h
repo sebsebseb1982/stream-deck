@@ -1,3 +1,6 @@
+#ifndef COLOR_H
+#define COLOR_H
+
 #define BLACK   0x0000
 #define BLUE    0x001F
 #define LIGHT_BLUE    0x6E7F
@@ -12,6 +15,9 @@
 #define DEEP_GRAY   0x2945
 
 // http://www.barth-dev.de/online/rgb565-color-picker/
-#define BACKGROUND_COLOR        0x4A49
+// https://ee-programming-notepad.blogspot.com/2016/10/16-bit-color-generator-picker.html
+#define BACKGROUND_COLOR        0x8C71
 
 #define LED_GREEN_COLOR       0x07E0
+
+#endif

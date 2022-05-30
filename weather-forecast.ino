@@ -1,3 +1,5 @@
+#include <HTTPClient.h>
+#include "weather-forecasts.secret.h"
 moonPhase moonPhase;
 
 TwoDaysWeatherForecasts getWeatherForecasts() {

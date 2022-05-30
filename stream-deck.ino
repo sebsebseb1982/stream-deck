@@ -1,85 +1,169 @@
 #include <Adafruit_GFX.h>
-#include <WiFi.h>
-#include <HTTPClient.h>
-#include <LCDWIKI_GUI.h>
+
 #include <moonPhase.h>
 #include <ArduinoJson.h>
 #include <SPI.h>
+#include <TFT_eSPI.h>
 
-#include <TFT_eSPI.h> // Hardware-specific library
+#include "wifi-connection.h"
+#include "screen.h"
+#include "widget-temperature.h"
+#include "widget-datetime.h"
+#include "widget-toggle-button.h"
+#include "widget-button.h"
+#include "jeedom.h"
 
-
-#include "display.h"
 #include "gui.h"
-#include "secret.h"
 #include "weather-forecast.h"
 #include "images.h"
-#include "buttons.h"
 
 #include <Fonts/FreeSans9pt7b.h>
 #include <Fonts/FreeSans12pt7b.h>
 
-#define SCREEN_WIDTH 480 // OLED display width, in pixels
-#define SCREEN_HEIGHT 320 // OLED display height, in pixels
-
-#define TIME_BUTTON_X 0
-#define TIME_BUTTON_Y 0
-#define HTTP_RETRY 10
-
-TFT_eSPI screen = TFT_eSPI();
-//SSD1283A_GUI screen(/*CS=5*/ SS, /*DC=*/ 17, /*RST=*/ 16, /*LED=*/ 4); //hardware spi,cs,cd,reset,led
-
-//GFXcanvas16T<SCREEN_WIDTH, SCREEN_HEIGHT> display;
+static TFT_eSPI screen = TFT_eSPI();
+Screen screenSetup(&screen);
 
 TwoDaysWeatherForecasts twoDaysWeatherForecasts;
 
+unsigned long temperatureWidgetsRefreshPeriodInMs = 1 /* minutes */ * 60 * 1000;
+
+WidgetTemperature etage(
+  5,
+  0,
+  "Etage",
+  &screen,
+  temperatureWidgetsRefreshPeriodInMs,
+  315
+);
+
+WidgetTemperature rdc(
+  5,
+  1,
+  "RDC",
+  &screen,
+  temperatureWidgetsRefreshPeriodInMs,
+  314
+);
+
+WidgetTemperature exterieur(
+  5,
+  2,
+  "Exterieur",
+  &screen,
+  temperatureWidgetsRefreshPeriodInMs,
+  320
+);
+
+WidgetTemperature setPoint(
+  4,
+  1,
+  "Chauffage",
+  &screen,
+  temperatureWidgetsRefreshPeriodInMs,
+  291
+);
+
+WidgetButton setPointPlus(
+  4,
+  2,
+  "Consigne +",
+  &screen,
+  1,
+  increment,
+  291
+);
+
+WidgetButton setPointMinus(
+  4,
+  3,
+  "Consigne -",
+  &screen,
+  1,
+  decrement,
+  291
+);
+
+WidgetToggleButton office(
+  1,
+  1,
+  "Bureau",
+  &screen,
+  1,
+  683
+);
+
+WidgetButton gate(
+  0,
+  1,
+  "Portail",
+  &screen,
+  1,
+  setToOne,
+  338
+);
+
+WidgetDatetime datetime(
+  0,
+  0,
+  "",
+  &screen,
+  5 * 1000
+);
+
 void setup() {
   Serial.begin(115200);
-  setupScreen();
-  setupWifi();
-  setupButtons();
-
+  WiFiConnection().init();
+  screenSetup.init();
   twoDaysWeatherForecasts = getWeatherForecasts();
+  etage.init();
+  rdc.init();
+  exterieur.init();
+  setPoint.init();
+  setPointPlus.init();
+  setPointMinus.init();
+  office.init();
+  gate.init();
+  datetime.init();
 }
 
 void loop() {
-  loopButtons();
-  //loopScreen();
-  drawWindowsButton(
-    TIME_BUTTON_X,
-    TIME_BUTTON_Y
-  );
-  drawTemperatureButton(
-    TIME_BUTTON_X,
-    TIME_BUTTON_Y + BUTTON_SIZE + 1,
-    "Exterieur",
-    320
-  );
-  drawTemperatureButton(
-    TIME_BUTTON_X + BUTTON_SIZE + 1,
-    TIME_BUTTON_Y,
-    "Interieur",
-    305
-  );
+  screenSetup.loop();
+  datetime.refresh();
+  drawWindowsWidget(4, 0);
 
-  drawImageButton(
-    TIME_BUTTON_X + BUTTON_SIZE + 1,
-    TIME_BUTTON_Y + BUTTON_SIZE + 1,
-    "Bureau"
-  );
-/*
+  office.refresh();
+  gate.refresh();
+
+  drawWeatherForecastsWidgets();
+
+  refreshHeaterWidgets();
+  refreshTemperatureWidgets();
+}
+
+void drawWeatherForecastsWidgets() {
   drawMeteoWidget(
-    TIME_BUTTON_X + BUTTON_SIZE + 1,
-    TIME_BUTTON_Y + BUTTON_SIZE + 1,
+    1,
+    0,
     twoDaysWeatherForecasts.today,
     "Auj."
   );
-  */
-  /*tft.drawRGBBitmap(
+
+  drawMeteoWidget(
+    2,
     0,
-    0,
-    screen.getBuffer(),
-    screen.width(),
-    screen.height()
-  );*/
+    twoDaysWeatherForecasts.tomorrow,
+    "Demain"
+  );
+}
+
+void refreshHeaterWidgets() {
+  setPoint.refresh();
+  setPointPlus.refresh();
+  setPointMinus.refresh();
+}
+
+void refreshTemperatureWidgets() {
+  etage.refresh();
+  rdc.refresh();
+  exterieur.refresh();
 }

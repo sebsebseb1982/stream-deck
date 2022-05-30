@@ -1,4 +1,17 @@
-String getJeedomVirtualValue(int virtualId) {
+#include <HTTPClient.h>
+
+#include "jeedom.h"
+#include "jeedom.secret.h"
+
+Jeedom::Jeedom() {}
+
+Jeedom::Jeedom(
+  unsigned int virtualId
+) {
+  this->virtualId = virtualId;
+}
+
+String Jeedom::getValue() {
   HTTPClient http;
   String jeedomUrl;
   jeedomUrl += F("http://");
@@ -15,7 +28,7 @@ String getJeedomVirtualValue(int virtualId) {
   message += F(" (GET ");
   message += jeedomUrl;
   message += F(")");
-  Serial.println(message);
+  ////Serial.println(message);
 
   int httpCode;
   int retry = 0;
@@ -23,7 +36,7 @@ String getJeedomVirtualValue(int virtualId) {
   do {
     httpCode = http.GET();
     retry ++;
-    Serial.println("...");
+    ////Serial.println("...");
   } while (httpCode <= 0 && retry < HTTP_RETRY);
 
   if (httpCode > 0) {
@@ -32,21 +45,20 @@ String getJeedomVirtualValue(int virtualId) {
     String message;
     message += F("OK -> valeur = ");
     message += virtualValue;
-    Serial.println(message);
-    Serial.println("");
+    ////Serial.println(message);
+    ////Serial.println("");
     return virtualValue;
   } else {
     String error;
     error += F("KO -> code erreur = ");
     error += String(httpCode);
-    Serial.println(error);
-    Serial.println("");
+    ////Serial.println(error);
+    ////Serial.println("");
     return "Erreur";
   }
-
 }
 
-void updateJeedomVirtualValue(int virtualId, String value) {
+void Jeedom::updateValue(String value) {
   HTTPClient http;
 
   String jeedomUrl;
@@ -66,7 +78,7 @@ void updateJeedomVirtualValue(int virtualId, String value) {
   message += F(" (GET ");
   message += jeedomUrl;
   message += F(")");
-  Serial.println(message);
+  //////Serial.println(message);
 
   int httpCode;
   int retry = 0;
@@ -74,19 +86,18 @@ void updateJeedomVirtualValue(int virtualId, String value) {
   do {
     httpCode = http.GET();
     retry ++;
-    Serial.println("...");
+    //////Serial.println("...");
   } while (httpCode <= 0 && retry < HTTP_RETRY);
 
   if (httpCode > 0) {
-    Serial.println("OK");
-    Serial.println("");
+    //////Serial.println("OK");
+    ////Serial.println("");
   } else {
     String error;
     error += F("KO -> code erreur = ");
     error += String(httpCode);
-    Serial.println(error);
-    Serial.println("");
+    ////Serial.println(error);
+    ////Serial.println("");
   }
   http.end();
-
 }
