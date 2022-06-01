@@ -10,6 +10,7 @@
 class Screen {
   private:
     TFT_eSPI *screen;
+    unsigned long lastTouchedMillis;
   public:
     Screen(TFT_eSPI *screen);
     void init();

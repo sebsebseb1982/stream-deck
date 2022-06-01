@@ -19,17 +19,8 @@ void GUI::drawButton(
       y + BUTTON_MARGIN,
       BUTTON_SIZE - (2 * BUTTON_MARGIN),
       BUTTON_SIZE - (2 * BUTTON_MARGIN),
-      LED_MARGIN,
-      BLACK
-    );
-    unsigned int delta = 3;
-    screen->fillRoundRect(
-      x + delta,
-      y + delta,
-      BUTTON_SIZE - delta,
-      BUTTON_SIZE - delta,
-      LED_MARGIN,
-      DARK_GRAY
+      LED_MARGIN - 1,
+      LIGHT_GRAY
     );
   } else {
     screen->fillRoundRect(
@@ -43,7 +34,7 @@ void GUI::drawButton(
   }
 
   uint16_t buttonBorderColor;
-  if (buttonStatus == UNAVAILABLE) {
+  if (buttonStatus == UNAVAILABLE || buttonStatus == ACTIVATED) {
     buttonBorderColor = DARK_GRAY;
   } else {
     buttonBorderColor = WHITE;

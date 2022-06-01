@@ -16,7 +16,7 @@ class GUI {
   private:
     TFT_eSPI *screen;
   public:
-      GUI();
+    GUI();
     GUI(TFT_eSPI *screen);
 
     void drawButton(
