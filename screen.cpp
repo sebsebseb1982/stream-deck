@@ -34,8 +34,8 @@ void Screen::loop() {
   }
 
   if (millis() - lastTouchedMillis > SCREEN_STANDBY_DELAY_MS) {
-    long backlightValue = 255-(millis() - lastTouchedMillis - SCREEN_STANDBY_DELAY_MS)/10;
-    long minimumBacklightValue = 10;
+    long backlightValue = 255 - (millis() - lastTouchedMillis - SCREEN_STANDBY_DELAY_MS) / 10;
+    long minimumBacklightValue = 100;
     ledcWrite(
       pwmChannel,
       max(minimumBacklightValue, backlightValue)

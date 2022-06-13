@@ -2,10 +2,12 @@
 #define BUZZER_H
 
 #include <Arduino.h>
+#include "clock.h"
 
 class Buzzer {
   private:
     static unsigned long stopBeepMillis;
+    static unsigned int currentLevel;
   public:
     static void setup();
     static void on();

@@ -26,6 +26,13 @@ class GUI {
       ButtonStatus buttonStatus
     );
 
+    void drawDoubleButton(
+      unsigned int x,
+      unsigned int y,
+      String label,
+      ButtonStatus buttonStatus
+    );
+
     void drawToggleButton(
       unsigned int x,
       unsigned int y,

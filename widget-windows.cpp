@@ -57,13 +57,13 @@ boolean WidgetWindows::isValueChanged() {
 }
 
 void WidgetWindows::manageTouch() {
-  Serial.println("WidgetWindows::manageTouch()");
+  //Serial.println("WidgetWindows::manageTouch()");
 }
 
 void WidgetWindows::manageTouchDown() {
-  Serial.println("WidgetWindows::manageTouchDown()");
+  //Serial.println("WidgetWindows::manageTouchDown()");
 }
 
 void WidgetWindows::manageTouchUp() {
-  Serial.println("WidgetWindows::manageTouchUp()");
+  //Serial.println("WidgetWindows::manageTouchUp()");
 }

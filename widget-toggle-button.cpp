@@ -50,11 +50,11 @@ boolean WidgetToggleButton::isValueChanged() {
 }
 
 void WidgetToggleButton::manageTouch() {
-  Serial.println("WidgetToggleButton::manageTouch()");
+  //Serial.println("WidgetToggleButton::manageTouch()");
 }
 
 void WidgetToggleButton::manageTouchDown() {
-  Serial.println("WidgetToggleButton::manageTouchDown()");
+  //Serial.println("WidgetToggleButton::manageTouchDown()");
 }
 
 void WidgetToggleButton::manageTouchUp() {
@@ -63,5 +63,5 @@ void WidgetToggleButton::manageTouchUp() {
   buttonStatus = value ? ACTIVATED : DESACTIVATED;
   draw();
 
-  Serial.println("WidgetToggleButton::manageTouchUp()");
+  //Serial.println("WidgetToggleButton::manageTouchUp()");
 }

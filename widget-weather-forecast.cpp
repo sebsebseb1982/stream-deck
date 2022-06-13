@@ -23,7 +23,7 @@ WidgetWeatherForecast::WidgetWeatherForecast(
 }
 
 void WidgetWeatherForecast::draw() {
-  gui.drawButton(
+  gui.drawDoubleButton(
     x,
     y,
     label,
@@ -37,21 +37,44 @@ void WidgetWeatherForecast::draw() {
     50,
     WHITE
   );
+
+  String date;
+  int dateDay = day(weatherForecast.date);
+  if (dateDay < 10) {
+    date += "0";
+  }
+  date += String(dateDay);
+  date += F("/");
+  int dateMonth = month(weatherForecast.date);
+  if (dateMonth < 10) {
+    date += "0";
+  }
+  date += String(dateMonth);
+
+  screen->drawString(
+    date,
+    x + BUTTON_SIZE / 2,
+    y + 70,
+    2
+  );
+  screen->drawString(
+    "Min " + String((int)round(weatherForecast.min)),
+    x + BUTTON_SIZE / 2,
+    y + 100,
+    2
+  );
+  screen->drawString(
+    "Max " + String((int)round(weatherForecast.max)),
+    x + BUTTON_SIZE / 2,
+    y + 120,
+    2
+  );
+
   previousWeatherForecast = weatherForecast;
 }
 
 void WidgetWeatherForecast::refreshValue() {
   weatherForecast = (*callback) ();
-
-  String date;
-  date += String(day(weatherForecast.date));
-  date += F("/");
-  date += String(month(weatherForecast.date));
-  date += F(" ");
-  date += String((int)round(weatherForecast.min));
-  date += F("/");
-  date += String((int)round(weatherForecast.max));
-  label = date;
 }
 
 boolean WidgetWeatherForecast::isValueChanged() {
@@ -62,13 +85,13 @@ boolean WidgetWeatherForecast::isValueChanged() {
 }
 
 void WidgetWeatherForecast::manageTouch() {
-  Serial.println("WidgetButton::manageTouch()");
+  //Serial.println("WidgetWeatherForecast::manageTouch()");
 }
 
 void WidgetWeatherForecast::manageTouchDown() {
-  Serial.println("WidgetButton::manageTouchDown()");
+  //Serial.println("WidgetWeatherForecast::manageTouchDown()");
 }
 
 void WidgetWeatherForecast::manageTouchUp() {
-  Serial.println("WidgetButton::manageTouchUp()");
+  //Serial.println("WidgetWeatherForecast::manageTouchUp()");
 }

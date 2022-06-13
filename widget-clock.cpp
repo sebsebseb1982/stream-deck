@@ -1,7 +1,7 @@
-#include "widget-datetime.h"
+#include "widget-clock.h"
 #include "gui.h"
 
-WidgetDatetime::WidgetDatetime(
+WidgetClock::WidgetClock(
   unsigned int column,
   unsigned int row,
   String label,
@@ -14,11 +14,11 @@ WidgetDatetime::WidgetDatetime(
     screen,
     refreshPeriodInMs
   ) {
-  this->jeedomDate = (678);
-  this->jeedomTime = (679);
+  //this->jeedomDate = (678);
+  //this->jeedomTime = (679);
 }
 
-void WidgetDatetime::draw() {
+void WidgetClock::draw() {
   gui.drawButton(
     x,
     y,
@@ -42,17 +42,17 @@ void WidgetDatetime::draw() {
   previousTime = time;
 }
 
-void WidgetDatetime::refreshValue() {
-  date = jeedomDate.getValue();
-  time = jeedomTime.getValue();
+void WidgetClock::refreshValue() {
+  date = Clock::date;
+  time = Clock::time;
 }
 
-boolean WidgetDatetime::isValueChanged() {
+boolean WidgetClock::isValueChanged() {
   return previousDate != date || previousTime != time;
 }
 
-void WidgetDatetime::manageTouch() {}
+void WidgetClock::manageTouch() {}
 
-void WidgetDatetime::manageTouchDown() {}
+void WidgetClock::manageTouchDown() {}
 
-void WidgetDatetime::manageTouchUp() {}
+void WidgetClock::manageTouchUp() {}

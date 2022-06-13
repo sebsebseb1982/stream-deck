@@ -33,7 +33,7 @@ void WidgetTemperature::draw() {
     2
   );
   previousTemperature = temperature;
-  Serial.println("WidgetTemperature::draw() " + label);
+  //Serial.println("WidgetTemperature::draw() " + label);
 }
 
 void WidgetTemperature::refreshValue() {
@@ -45,13 +45,13 @@ boolean WidgetTemperature::isValueChanged() {
 }
 
 void WidgetTemperature::manageTouch() {
-  Serial.println("WidgetTemperature::manageTouch()");
+  //Serial.println("WidgetTemperature::manageTouch()");
 }
 
 void WidgetTemperature::manageTouchDown() {
-  Serial.println("WidgetTemperature::manageTouchDown()");
+  //Serial.println("WidgetTemperature::manageTouchDown()");
 }
 
 void WidgetTemperature::manageTouchUp() {
-  Serial.println("WidgetTemperature::manageTouchUp()");
+  //Serial.println("WidgetTemperature::manageTouchUp()");
 }

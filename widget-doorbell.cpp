@@ -3,6 +3,7 @@
 #include "colors.h"
 #include "images.h"
 #include "buzzer.h"
+#include "clock.h"
 
 WidgetDoorBell::WidgetDoorBell(
   unsigned int column,
@@ -17,8 +18,7 @@ WidgetDoorBell::WidgetDoorBell(
     screen,
     refreshPeriodInMs
   ) {
-  this->jeedomDoorBell = (310);
-  this->jeedomTime = (679);
+  this->jeedom = (310);
   this->iconAnimationXDelta = 2;
 }
 
@@ -53,13 +53,13 @@ void WidgetDoorBell::draw() {
 }
 
 void WidgetDoorBell::refreshValue() {
-  value = jeedomDoorBell.getValue() == "1";
+  value = jeedom.getValue() == "1";
 }
 
 boolean WidgetDoorBell::isValueChanged() {
   if (value) {
     Buzzer::beep(5*1000);
-    label = jeedomTime.getValue();
+    label = Clock::time;
     draw();
   }
   return previousValue != value;

@@ -15,7 +15,7 @@ TwoDaysWeatherForecasts WeatherForecastClient::getWeatherForecasts() {
   message += F(" (GET ");
   message += API_OPENWEATHERMAP;
   message += F(")");
-  Serial.println(message);
+  //Serial.println(message);
 
   int httpCode;
   int retry = 0;
@@ -23,20 +23,20 @@ TwoDaysWeatherForecasts WeatherForecastClient::getWeatherForecasts() {
   do {
     httpCode = http.GET();
     retry ++;
-    Serial.println("...");
+    //Serial.println("...");
   } while (httpCode <= 0 && retry < HTTP_RETRY);
 
   if (httpCode > 0) {
-    Serial.println("OK");
-    Serial.println("");
+    //Serial.println("OK");
+    //Serial.println("");
 
     String response = http.getString();
     http.end();
     DynamicJsonDocument doc(8192);
     DeserializationError error = deserializeJson(doc, response);
     if (error) {
-      Serial.print(F("deserializeJson() failed: "));
-      Serial.println(error.c_str());
+      //Serial.print(F("deserializeJson() failed: "));
+      //Serial.println(error.c_str());
       return {{0, "", 0, 0}};
     }
 
@@ -59,8 +59,9 @@ TwoDaysWeatherForecasts WeatherForecastClient::getWeatherForecasts() {
     String error;
     error += F("KO -> code erreur = ");
     error += String(httpCode);
-    Serial.println(error);
-    Serial.println("");
+    //Serial.println(error);
+    //Serial.println("");
+    http.end();
     return {{0, "", 0, 0}};
   }
 }

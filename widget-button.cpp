@@ -48,18 +48,18 @@ boolean WidgetButton::isValueChanged() {
 }
 
 void WidgetButton::manageTouch() {
-  Serial.println("WidgetButton::manageTouch()");
+  //Serial.println("WidgetButton::manageTouch()");
 }
 
 void WidgetButton::manageTouchDown() {
   (*callback) (virtualId);
   buttonStatus = ACTIVATED;
   draw();
-  Serial.println("WidgetButton::manageTouchDown()");
+  //Serial.println("WidgetButton::manageTouchDown()");
 }
 
 void WidgetButton::manageTouchUp() {
   buttonStatus = DESACTIVATED;
   draw();
-  Serial.println("WidgetButton::manageTouchUp()");
+  //Serial.println("WidgetButton::manageTouchUp()");
 }

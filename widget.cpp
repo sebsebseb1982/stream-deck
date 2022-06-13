@@ -25,13 +25,33 @@ void Widget::init() {
 
 void Widget::refresh() {
   currentMillis = millis();
+  boolean valueRefreshed = false;
+  unsigned long refreshValueDurationInMs = 0;
   if (currentMillis - startMillis >= refreshPeriodInMs) {
     refreshValue();
+    valueRefreshed = true;
+    refreshValueDurationInMs = millis() - currentMillis;
+    Serial.println("refreshValue() " + label + "(time=" + String(refreshValueDurationInMs) + " ms)");
     startMillis = currentMillis;
   }
 
   if (isValueChanged()) {
     draw();
+  }
+
+  if (valueRefreshed) {
+    screen->drawString(
+      "       ",
+      x + BUTTON_SIZE / 2,
+      y + BUTTON_MARGIN + LED_MARGIN,
+      1
+    );
+    screen->drawString(
+      String(refreshValueDurationInMs),
+      x + BUTTON_SIZE / 2,
+      y + BUTTON_MARGIN + LED_MARGIN,
+      1
+    );
   }
 
   touchStatus = isTouched();
@@ -40,12 +60,12 @@ void Widget::refresh() {
   }
   /*if (touchStatus) {
     manageTouch();
-  }*/
+    }*/
   if (previousTouchStatus != touchStatus && !touchStatus) {
     manageTouchUp();
   }
   previousTouchStatus = touchStatus;
-  Serial.println("Widget::refresh() " + label + "(time=" + String(millis() - currentMillis) + "ms )");
+  //Serial.println("Widget::refresh() " + label + "(time=" + String(millis() - currentMillis) + "ms )");
 }
 
 boolean Widget::isTouched() {

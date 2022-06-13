@@ -1,19 +1,17 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 
-#include "jeedom.h"
+#include "clock.h"
 #include "widget.h"
 
-class WidgetDatetime : public Widget {
+class WidgetClock : public Widget {
   private:
     String date;
     String time;
     String previousDate;
     String previousTime;
-    Jeedom jeedomDate;
-    Jeedom jeedomTime;
   public:
-    WidgetDatetime(
+    WidgetClock(
       unsigned int column,
       unsigned int row,
       String label,

@@ -4,14 +4,14 @@
 #include <Arduino.h>
 #include "jeedom.h"
 #include "widget.h"
+#include "clock.h"
 
 class WidgetDoorBell : public Widget {
   private:
     boolean value;
     boolean previousValue;
     int iconAnimationXDelta;
-    Jeedom jeedomDoorBell;
-    Jeedom jeedomTime;
+    Jeedom jeedom;
   public:
     WidgetDoorBell(
       unsigned int column,

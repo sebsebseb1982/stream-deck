@@ -1,19 +1,32 @@
 #include "buzzer.h"
 
-#define BUZZER_PIN 25
+#define pwmChannel 1 //Choisit le canal 0
+#define frequence 1000 //Fréquence PWM de 1 KHz
+#define resolution 8 // Résolution de 8 bits, 256 valeurs possibles
+
+#define BUZZER_PIN 13
 
 unsigned long Buzzer::stopBeepMillis = 0;
+unsigned int Buzzer::currentLevel = 0;
 
 void Buzzer::setup() {
-  pinMode(BUZZER_PIN, OUTPUT);
+  ledcSetup(pwmChannel, frequence, resolution);
+  ledcAttachPin(BUZZER_PIN, pwmChannel);
+  ledcWrite(pwmChannel, currentLevel);
 }
 
 void Buzzer::on() {
-  digitalWrite(BUZZER_PIN, HIGH);
+  ledcWrite(
+    pwmChannel,
+    currentLevel
+  );
 }
 
 void Buzzer::off() {
-  digitalWrite(BUZZER_PIN, LOW);
+  ledcWrite(
+    pwmChannel,
+    0
+  );
 }
 
 void Buzzer::beep(unsigned int durationInMs) {
@@ -22,6 +35,13 @@ void Buzzer::beep(unsigned int durationInMs) {
 }
 
 void Buzzer::refresh() {
+  boolean isNight = Clock::time < "09:00" || Clock::time > "20:00";
+  if (isNight) {
+    currentLevel = 3;
+  } else {
+    currentLevel = 255;
+  }
+
   if (millis() > stopBeepMillis) {
     off();
   }
