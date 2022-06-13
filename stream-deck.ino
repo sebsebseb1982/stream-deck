@@ -3,6 +3,7 @@
 #include <moonPhase.h>
 #include <SPI.h>
 #include <TFT_eSPI.h>
+#include <WiFi.h>
 
 #include "wifi-connection.h"
 #include "screen.h"
@@ -40,11 +41,10 @@ WidgetTemperature       setPoint     (4, 1, "Chauffage",      &screen, FIVE_SECO
 WidgetButton            setPointPlus (4, 2, "Consigne +",     &screen, ONE_HOUR,          increment, 291);
 WidgetButton            setPointMinus(4, 3, "Consigne -",     &screen, ONE_HOUR,          decrement, 291);
 WidgetToggleButton      office       (3, 0, "Bureau",         &screen, THIRTHY_MINUTES,   683);
-WidgetButton            gate         (0, 1, "Portail",        &screen, ONE_MINUTE,        setToOne,  338);
+WidgetButton            gate         (0, 1, "Portail",        &screen, THREE_HOURS,       setToOne,  338);
 WidgetWindows           windows      (4, 0, "Aeration",       &screen, ONE_MINUTE);
 WidgetDoorBell          doorBell     (0, 3, "Sonnette",       &screen, FIVE_SECONDS);
 WidgetToggleButton      fan          (5, 3, "Ventilateur",    &screen, THIRTHY_MINUTES,   696);
-
 
 #define widgetNumbers 14
 Widget *widgets[widgetNumbers];
@@ -96,6 +96,19 @@ void loop() {
     String(ESP.getFreeHeap()),
     200,
     300,
+    1
+  );
+
+  screen.drawString(
+    "         ",
+    200,
+    280,
+    1
+  );
+  screen.drawString(
+    String(WiFi.RSSI()),
+    200,
+    280,
     1
   );
 }
