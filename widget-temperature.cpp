@@ -22,6 +22,8 @@ void WidgetTemperature::draw() {
   gui.drawButton(
     x,
     y,
+    1,
+    1,
     label,
     UNAVAILABLE
   );

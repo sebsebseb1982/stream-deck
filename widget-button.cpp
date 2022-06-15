@@ -11,7 +11,8 @@ WidgetButton::WidgetButton(
   TFT_eSPI *screen,
   unsigned long refreshPeriodInMs,
   WidgetButtonCallback callback,
-  unsigned int virtualId
+  unsigned int virtualId,
+  const unsigned char *icon
 ) : Widget(
     column,
     row,
@@ -21,6 +22,7 @@ WidgetButton::WidgetButton(
   ) {
   this->virtualId = virtualId;
   this->callback = callback;
+  this->icon = icon;
   buttonStatus = DESACTIVATED;
 }
 
@@ -28,13 +30,15 @@ void WidgetButton::draw() {
   gui.drawButton(
     x,
     y,
+    1,
+    1,
     label,
     buttonStatus
   );
   screen->drawBitmap(
-    x + 16,
-    y + 10,
-    bulb,
+    x + (BUTTON_SIZE - ICON_SIZE) / 2,
+    y + ((BUTTON_SIZE - ICON_SIZE) / 2) - 8,
+    icon,
     32,
     32,
     WHITE

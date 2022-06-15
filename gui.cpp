@@ -8,26 +8,28 @@ GUI::GUI(TFT_eSPI *screen) {
 }
 
 void GUI::drawButton(
-  unsigned int x,
-  unsigned int y,
+  unsigned int positionX,
+  unsigned int positionY,
+  unsigned int sizeX,
+  unsigned int sizeY,
   String label,
   ButtonStatus buttonStatus
 ) {
   if (buttonStatus == ACTIVATED) {
     screen->fillRoundRect(
-      x + BUTTON_MARGIN,
-      y + BUTTON_MARGIN,
-      BUTTON_SIZE - (2 * BUTTON_MARGIN),
-      BUTTON_SIZE - (2 * BUTTON_MARGIN),
+      positionX + BUTTON_MARGIN,
+      positionY + BUTTON_MARGIN,
+      sizeX * BUTTON_SIZE - (2 * BUTTON_MARGIN),
+      sizeY * BUTTON_SIZE - (2 * BUTTON_MARGIN),
       LED_MARGIN - 1,
       LIGHT_GRAY
     );
   } else {
     screen->fillRoundRect(
-      x + BUTTON_MARGIN,
-      y + BUTTON_MARGIN,
-      BUTTON_SIZE - (2 * BUTTON_MARGIN),
-      BUTTON_SIZE - (2 * BUTTON_MARGIN),
+      positionX + BUTTON_MARGIN,
+      positionY + BUTTON_MARGIN,
+      sizeX * BUTTON_SIZE - (2 * BUTTON_MARGIN),
+      sizeY * BUTTON_SIZE - (2 * BUTTON_MARGIN),
       LED_MARGIN,
       BACKGROUND_COLOR
     );
@@ -41,68 +43,18 @@ void GUI::drawButton(
   }
 
   screen->drawRoundRect(
-    x + BUTTON_MARGIN,
-    y + BUTTON_MARGIN,
-    BUTTON_SIZE - (2 * BUTTON_MARGIN),
-    BUTTON_SIZE - (2 * BUTTON_MARGIN),
+    positionX + BUTTON_MARGIN,
+    positionY + BUTTON_MARGIN,
+    sizeX * BUTTON_SIZE - (2 * BUTTON_MARGIN),
+    sizeY * BUTTON_SIZE - (2 * BUTTON_MARGIN),
     LED_MARGIN,
     buttonBorderColor
   );
 
   screen->drawString(
     label,
-    x + (BUTTON_SIZE / 2) + BUTTON_MARGIN,
-    y + 63,
-    1
-  );
-}
-
-void GUI::drawDoubleButton(
-  unsigned int x,
-  unsigned int y,
-  String label,
-  ButtonStatus buttonStatus
-) {
-  if (buttonStatus == ACTIVATED) {
-    screen->fillRoundRect(
-      x + BUTTON_MARGIN,
-      y + BUTTON_MARGIN,
-      BUTTON_SIZE - (2 * BUTTON_MARGIN),
-      2 * BUTTON_SIZE - (2 * BUTTON_MARGIN),
-      LED_MARGIN - 1,
-      LIGHT_GRAY
-    );
-  } else {
-    screen->fillRoundRect(
-      x + BUTTON_MARGIN,
-      y + BUTTON_MARGIN,
-      BUTTON_SIZE - (2 * BUTTON_MARGIN),
-      2 * BUTTON_SIZE - (2 * BUTTON_MARGIN),
-      LED_MARGIN,
-      BACKGROUND_COLOR
-    );
-  }
-
-  uint16_t buttonBorderColor;
-  if (buttonStatus == UNAVAILABLE || buttonStatus == ACTIVATED) {
-    buttonBorderColor = DARK_GRAY;
-  } else {
-    buttonBorderColor = WHITE;
-  }
-
-  screen->drawRoundRect(
-    x + BUTTON_MARGIN,
-    y + BUTTON_MARGIN,
-    BUTTON_SIZE - (2 * BUTTON_MARGIN),
-    2 * BUTTON_SIZE - (2 * BUTTON_MARGIN),
-    LED_MARGIN,
-    buttonBorderColor
-  );
-
-  screen->drawString(
-    label,
-    x + (BUTTON_SIZE / 2) + BUTTON_MARGIN,
-    y + BUTTON_SIZE + 63,
+    positionX + (sizeX * BUTTON_SIZE / 2) + BUTTON_MARGIN,
+    positionY + sizeY * BUTTON_SIZE - 17,
     1
   );
 }
@@ -116,6 +68,8 @@ void GUI::drawToggleButton(
   drawButton(
     x,
     y,
+    1,
+    1,
     label,
     buttonStatus
   );

@@ -23,6 +23,8 @@ void WidgetWindows::draw() {
   gui.drawButton(
     x,
     y,
+    1,
+    1,
     "Aeration",
     UNAVAILABLE
   );

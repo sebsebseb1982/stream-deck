@@ -23,9 +23,11 @@ WidgetWeatherForecast::WidgetWeatherForecast(
 }
 
 void WidgetWeatherForecast::draw() {
-  gui.drawDoubleButton(
+  gui.drawButton(
     x,
     y,
+    1,
+    2,
     label,
     UNAVAILABLE
   );

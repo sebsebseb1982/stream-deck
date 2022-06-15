@@ -10,6 +10,7 @@ class WidgetButton : public Widget {
     unsigned int virtualId;
     ButtonStatus buttonStatus;
     WidgetButtonCallback callback;
+    const unsigned char *icon;
   public:
     WidgetButton(
       unsigned int column,
@@ -18,7 +19,8 @@ class WidgetButton : public Widget {
       TFT_eSPI *screen,
       unsigned long refreshPeriodInMs,
       WidgetButtonCallback callback,
-      unsigned int virtualId
+      unsigned int virtualId,
+      const unsigned char *icon
     );
     void draw();
     void refreshValue();

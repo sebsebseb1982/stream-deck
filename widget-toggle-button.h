@@ -11,6 +11,7 @@ class WidgetToggleButton : public Widget {
     boolean previousValue;
     ButtonStatus buttonStatus;
     ButtonStatus previousButtonStatus;
+    const unsigned char *icon;
   public:
     WidgetToggleButton(
       unsigned int column,
@@ -18,7 +19,8 @@ class WidgetToggleButton : public Widget {
       String label,
       TFT_eSPI *screen,
       unsigned long refreshPeriodInMs,
-      unsigned int virtualId
+      unsigned int virtualId,
+      const unsigned char *icon
     );
     void draw();
     void refreshValue();

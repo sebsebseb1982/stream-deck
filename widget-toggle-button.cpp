@@ -9,7 +9,8 @@ WidgetToggleButton::WidgetToggleButton(
   String label,
   TFT_eSPI *screen,
   unsigned long refreshPeriodInMs,
-  unsigned int virtualId
+  unsigned int virtualId,
+  const unsigned char *icon
 ) : Widget(
     column,
     row,
@@ -18,6 +19,7 @@ WidgetToggleButton::WidgetToggleButton(
     refreshPeriodInMs
   ) {
   this->jeedom = (virtualId);
+  this->icon = icon;
 }
 
 void WidgetToggleButton::draw() {
@@ -28,9 +30,9 @@ void WidgetToggleButton::draw() {
     buttonStatus
   );
   screen->drawBitmap(
-    x + 16,
-    y + 10,
-    bulb,
+    x + (BUTTON_SIZE - ICON_SIZE) / 2,
+    y + ((BUTTON_SIZE - ICON_SIZE) / 2) - 8,
+    icon,
     32,
     32,
     WHITE

@@ -29,16 +29,18 @@ void Widget::refresh() {
   unsigned long refreshValueDurationInMs = 0;
   if (currentMillis - startMillis >= refreshPeriodInMs) {
     refreshValue();
+    /*
     valueRefreshed = true;
     refreshValueDurationInMs = millis() - currentMillis;
     Serial.println("refreshValue() " + label + "(time=" + String(refreshValueDurationInMs) + " ms)");
+    */
     startMillis = currentMillis;
   }
 
   if (isValueChanged()) {
     draw();
   }
-
+/*
   if (valueRefreshed) {
     screen->drawString(
       "       ",
@@ -53,7 +55,7 @@ void Widget::refresh() {
       1
     );
   }
-
+*/
   touchStatus = isTouched();
   if (previousTouchStatus != touchStatus && touchStatus) {
     manageTouchDown();

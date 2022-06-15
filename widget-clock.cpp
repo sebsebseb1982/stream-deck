@@ -22,6 +22,8 @@ void WidgetClock::draw() {
   gui.drawButton(
     x,
     y,
+    1,
+    1,
     "",
     UNAVAILABLE
   );

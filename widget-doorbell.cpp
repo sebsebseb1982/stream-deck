@@ -4,6 +4,7 @@
 #include "images.h"
 #include "buzzer.h"
 #include "clock.h"
+#include "icons-32x32.h"
 
 WidgetDoorBell::WidgetDoorBell(
   unsigned int column,
@@ -26,6 +27,8 @@ void WidgetDoorBell::draw() {
   gui.drawButton(
     x,
     y,
+    1,
+    1,
     label,
     UNAVAILABLE
   );
@@ -34,18 +37,18 @@ void WidgetDoorBell::draw() {
     screen->drawBitmap(
       x + iconAnimationXDelta + (BUTTON_SIZE - ICON_SIZE) / 2,
       y + 10,
-      windowOpened,
-      ICON_SIZE,
-      ICON_SIZE,
+      bell32x32,
+      32,
+      32,
       RED
     );
   } else {
     screen->drawBitmap(
       x + (BUTTON_SIZE - ICON_SIZE) / 2,
-      y + 10,
-      windowOpened,
-      ICON_SIZE,
-      ICON_SIZE,
+      y + ((BUTTON_SIZE - ICON_SIZE) / 2) - 8,
+      bell32x32,
+      32,
+      32,
       WHITE
     );
   }
@@ -58,7 +61,7 @@ void WidgetDoorBell::refreshValue() {
 
 boolean WidgetDoorBell::isValueChanged() {
   if (value) {
-    Buzzer::beep(5*1000);
+    Buzzer::beep(5 * 1000);
     label = Clock::time;
     draw();
   }

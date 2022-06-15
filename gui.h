@@ -20,15 +20,10 @@ class GUI {
     GUI(TFT_eSPI *screen);
 
     void drawButton(
-      unsigned int x,
-      unsigned int y,
-      String label,
-      ButtonStatus buttonStatus
-    );
-
-    void drawDoubleButton(
-      unsigned int x,
-      unsigned int y,
+      unsigned int positionX,
+      unsigned int positionY,
+      unsigned int sizeX,
+      unsigned int sizeY,
       String label,
       ButtonStatus buttonStatus
     );
