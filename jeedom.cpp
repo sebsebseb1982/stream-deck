@@ -2,12 +2,12 @@
 #include "jeedom.secret.h"
 
 Jeedom::Jeedom() {
+  this->taskUpdateValue = TaskHandle_t();
 }
 
-Jeedom::Jeedom(
-  unsigned int virtualId
-) {
+Jeedom::Jeedom(unsigned int virtualId) {
   this->virtualId = virtualId;
+  this->taskUpdateValue = TaskHandle_t();
 }
 
 String Jeedom::getValue() {
@@ -37,7 +37,7 @@ String Jeedom::getValue() {
 
   do {
     httpCode = http.GET();
-    retry ++;
+    retry++;
     //Serial.println("...");
   } while (httpCode <= 0 && retry < HTTP_RETRY);
 
@@ -63,32 +63,57 @@ String Jeedom::getValue() {
 }
 
 void Jeedom::updateValue(String value) {
+
+  Serial.println("updateValue() value=" + value);
+
+  JeedomTaskParameters jeedomTaskParameters = {
+    virtualId,
+    value.toInt()
+  };
+
+  xTaskCreatePinnedToCore(
+    Jeedom::teeest,                /* Task function. */
+    "teeest",                      /* name of task. */
+    10000,                         /* Stack size of task */
+    (void *)&jeedomTaskParameters, /* parameter of the task */
+    2,                             /* priority of the task */
+    &taskUpdateValue,              /* Task handle to keep track of created task */
+    1);
+}
+
+void Jeedom::teeest(void *pvParameters) {
+
+  JeedomTaskParameters jeedomTaskParameters= *((JeedomTaskParameters *)pvParameters);
+
+String virtualId = String(jeedomTaskParameters.virtualId);
+String value = String(jeedomTaskParameters.value);
+
   String url;
   url += F("http://");
-  url  += JEEDOM_HOST;
-  url  += F("/core/api/jeeApi.php?plugin=virtual&apikey=");
-  url  += JEEDOM_VIRTUAL_API_KEY;
-  url  += F("&type=virtual&id=");
-  url  += String(virtualId);
-  url  += F("&value=");
-  url  += value;
+  url += JEEDOM_HOST;
+  url += F("/core/api/jeeApi.php?plugin=virtual&apikey=");
+  url += JEEDOM_VIRTUAL_API_KEY;
+  url += F("&type=virtual&id=");
+  url += virtualId;
+  url += F("&value=");
+  url += value;
   HTTPClient http;
   http.begin(url);
 
   String message;
   message += F("Mise a jour du virtual ");
-  message += String(virtualId);
+  message += virtualId;
   message += F(" (GET ");
   message += url;
   message += F(")");
-  //Serial.println(message);
+  Serial.println(message);
 
   int httpCode;
   int retry = 0;
 
   do {
     httpCode = http.GET();
-    retry ++;
+    retry++;
     //Serial.println("...");
   } while (httpCode <= 0 && retry < HTTP_RETRY);
 
@@ -103,4 +128,6 @@ void Jeedom::updateValue(String value) {
     //Serial.println("");
   }
   http.end();
+
+  vTaskDelete(NULL);
 }
