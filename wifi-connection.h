@@ -2,6 +2,7 @@
 
 class WiFiConnection {
   public:
-    WiFiConnection();
-    void init();
+    static unsigned int nbConnection;
+    static void connect();
+    static void loop();
 };

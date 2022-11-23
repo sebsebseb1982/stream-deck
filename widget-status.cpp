@@ -2,6 +2,7 @@
 
 #include "widget-status.h"
 #include "gui.h"
+#include "wifi-connection.h"
 
 WidgetStatus::WidgetStatus(
   unsigned int column,
@@ -54,7 +55,9 @@ void WidgetStatus::draw() {
   String wifiStatus;
   wifiStatus += "WiFi : ";
   wifiStatus += String(WiFi.RSSI());
-  wifiStatus += " db";
+  wifiStatus += " db (r=";
+  wifiStatus += String(WiFiConnection::nbConnection);
+  wifiStatus += ")";
   screen->drawString(
     wifiStatus,
     x + spaceBetweenLines,

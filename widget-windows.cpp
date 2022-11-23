@@ -1,7 +1,7 @@
 #include "widget-windows.h"
 #include "gui.h"
 #include "colors.h"
-#include "images.h"
+#include "icons-32x32.h"
 
 WidgetWindows::WidgetWindows(
   unsigned int column,
@@ -30,8 +30,8 @@ void WidgetWindows::draw() {
   );
   if (value) {
     screen->drawBitmap(
-      x + (BUTTON_SIZE - ICON_SIZE) / 2,
-      y + 10,
+    x + (BUTTON_SIZE - ICON_SIZE) / 2,
+    y + ((BUTTON_SIZE - ICON_SIZE) / 2) - 8,
       windowOpened,
       ICON_SIZE,
       ICON_SIZE,
@@ -39,8 +39,8 @@ void WidgetWindows::draw() {
     );
   } else {
     screen->drawBitmap(
-      x + (BUTTON_SIZE - ICON_SIZE) / 2,
-      y + 10,
+    x + (BUTTON_SIZE - ICON_SIZE) / 2,
+    y + ((BUTTON_SIZE - ICON_SIZE) / 2) - 8,
       windowClosed,
       ICON_SIZE,
       ICON_SIZE,
